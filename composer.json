@@ -1,0 +1,33 @@
+{
+    "name": "ekyna/gls-uni-box",
+    "description": "GLS uni box PHP library",
+    "type": "component",
+    "authors": [
+        {
+            "name": "Etienne Dauvergne",
+            "homepage": "http://ekyna.com"
+        }
+    ],
+    "keywords": [
+        "php",
+        "gls",
+        "uni box"
+    ],
+    "homepage": "https://github.com/ekyna/GlsUniBox",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0",
+        "php-http/guzzle6-adapter": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ekyna\\Component\\GlsUniBox\\": ""
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
