@@ -5,11 +5,11 @@ namespace Ekyna\Component\GlsUniBox\Api;
 use Ekyna\Component\GlsUniBox\Exception\InvalidArgumentException;
 
 /**
- * Class Product
+ * Class Service
  * @package Ekyna\Component\GlsUniBox\Api
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-abstract class Product
+abstract class Service
 {
     /**
      * Business Parcel
@@ -106,6 +106,22 @@ abstract class Product
             default:
                 return 'Business Parcel';
         }
+    }
+
+    /**
+     * Returns the choices.
+     *
+     * @return array
+     */
+    static public function getChoices()
+    {
+        $choices = [];
+
+        foreach (static::getCodes() as $code) {
+            $choices[static::getLabel($code)] = $code;
+        }
+
+        return $choices;
     }
 
     /**

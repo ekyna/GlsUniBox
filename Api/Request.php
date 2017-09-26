@@ -12,19 +12,17 @@ class Request extends AbstractData
     /**
      * @var string
      */
-    private $product;
+    private $service;
 
 
     /**
      * Constructor.
      *
-     * @param string $product
+     * @param string $service
      */
-    public function __construct($product = Product::BP)
+    public function __construct($service = Service::BP)
     {
-        Product::isValid($product);
-
-        $this->product = $product;
+        $this->setService($service);
 
         $this->set(Config::T8973, 1);
         $this->set(Config::T8904, 1);
@@ -76,7 +74,7 @@ class Request extends AbstractData
          *
          * Exemple : T8975:0200000000800000FR */
 
-         return Product::getNumerical($this->product) .
+         return Service::getNumerical($this->service) .
              str_pad($this->get(Config::T859), 10, '0', STR_PAD_LEFT) .
              '0000' .
              $this->get(Config::T100);
@@ -106,6 +104,30 @@ class Request extends AbstractData
     public function setWeight($weight)
     {
         $this->set(Config::T530, (string) round($weight, 2));
+
+        return $this;
+    }
+
+    /**
+     * Sets the service (T200).
+     *
+     * @param string $service
+     *
+     * @return $this
+     */
+    public function setService($service)
+    {
+        Service::isValid($service);
+
+        $this->service = $service;
+
+        if ($service === Service::EP) {
+            $this->set(Config::T200, 'T13');
+            $this->set(Config::T206, $service);
+        } elseif ($service === Service::SHD || $service === Service::FDF) {
+            $this->set(Config::T200, $service);
+            $this->set(Config::T750, Service::getLabel($service));
+        }
 
         return $this;
     }
@@ -467,13 +489,16 @@ class Request extends AbstractData
      *
      * @param array $config
      *
+     * @return $this
+     *
      * @see Client::send()
      */
     public function configure(array $config)
     {
-        $this
+        return $this
             ->setGLSShipmentDeposit($config[Config::T8700])
             ->setCustomerCode($config[Config::T8915])
-            ->setContactId($config[Config::T8914]);
+            ->setContactId($config[Config::T8914])
+            ->clean();
     }
 }

@@ -1,0 +1,627 @@
+{% macro data(label, id, classes) %}
+    {% if label[id] is defined %}
+        <div id="{{ id }}" class="data{% if classes is not empty %} {{ classes }}{% endif %}">
+            {{ label[id] }}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% import _self as macro %}
+
+<!doctype html>
+<html>
+<head>
+    <title>Etiquette</title>
+
+    <style type="text/css">
+        /* ----------------------- RESET ----------------------- */
+        html, body,
+        div, p, span, small, strong,
+        table, caption, tbody, tfoot, thead, tr, th, td {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 10pt;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        body {
+            line-height: 1;
+        }
+
+        ol, ul {
+            list-style: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        /* ----------------------- GLOBAL ----------------------- */
+        html, body {
+            /*width: 210mm;*/
+        }
+
+        body {
+            position: relative;
+            font-family: Arial, sans-serif;
+            /*background: #eee;*/
+        }
+
+        .container { /* A4 */
+            width: 210mm;
+            height: 297mm;
+        }
+
+        .label {
+            margin: 5.55mm 6.5mm; {# TODO configurable ? #}
+            position: relative;
+            background-color: #fff;
+            width: 92mm;
+            height: 138mm;
+            float: left;
+        }
+
+        /* ----------------------- CONTROL BARS ----------------------- */
+        .control-bar {
+            position: absolute;
+            background-color: #000;
+        }
+
+        #control-bar-1 {
+            top: 0;
+            left: 0;
+            width: 92mm;
+            height: 2.7mm;
+        }
+
+        #control-bar-2 {
+            top: 15.33mm;
+            left: 1.8mm;
+            width: 90.2mm;
+            height: .45mm;
+        }
+
+        #control-bar-3 {
+            top: 26.6mm;
+            left: .9mm;
+            width: 90.2mm;
+            height: .45mm;
+        }
+
+        #control-bar-4 {
+            top: 56.4mm;
+            left: .9mm;
+            width: 90.2mm;
+            height: .23mm;
+        }
+
+        /* ----------------------- FRAMES ----------------------- */
+        .frame {
+            position: absolute;
+            border: .23mm solid #000;
+            box-sizing: border-box;
+        }
+
+        /* ----------------------- DATA ----------------------- */
+        .data {
+            position: absolute;
+        }
+
+        .datamatrix > img {
+            width: 20.15mm;
+            height: auto;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .alt {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* ------- Control bar 1 ------- */
+
+        /* Clé tri expedition */
+        #T110 {
+            left: 1.8mm;
+            top: 4.5mm;
+            font-size: 25.25pt;
+        }
+
+        /* Clé de tri réception */
+        #T310 {
+            top: 2.7mm;
+            left: 40.6mm;
+            width: 9mm;
+            height: 12.63mm;
+            font-size: 26.16pt;
+            line-height: 12.63mm;
+        }
+
+        /* Dépôt GLS livraison */
+        #T101 {
+            top: 2.7mm;
+            left: 65mm;
+            width: 27mm;
+            height: 12.63mm;
+            font-size: 18pt;
+            line-height: 12.63mm;
+        }
+
+        /* Pays livraison Euro express */
+        #T100, #T105 {
+            top: 2.7mm;
+            left: 49.6mm;
+            width: 15.4mm;
+            height: 12.63mm;
+            font-size: 23pt;
+            line-height: 12.63mm;
+        }
+
+        /* ------- Control bar 2 ------- */
+
+        /* Code tournée */
+        #T320 {
+            top: 17mm;
+            left: 2mm;
+            font-size: 23pt;
+            font-weight: bold;
+        }
+
+        /* "ZipCode" */
+        #T8951 {
+            top: 16.24mm;
+            left: 30.5mm;
+            font-size: 8.2pt;
+        }
+
+        /* Code postal */
+        #T330 {
+            top: 20.7mm;
+            left: 29mm;
+            font-size: 14.4pt;
+        }
+
+        /* "Your GLS Track ID" */
+        #T8952 {
+            top: 16.24mm;
+            left: 48.7mm;
+            font-size: 8.2pt;
+        }
+
+        /* GLS Track ID */
+        #T8913 {
+            top: 22.5mm;
+            left: 48.62mm;
+            font-size: 10pt;
+        }
+
+        /* Shop Delivery Service */
+        #T200 {
+            top: 18.3mm;
+            left: 74.87mm;
+            font-size: 14.4pt;
+            font-weight: bold;
+        }
+
+        /* ------- Control bar 3 ------- */
+
+        /* Code datamatrix principal */
+        #T8902 {
+            box-sizing: border-box;
+            top: 27.42mm;
+            width: 26.45mm;
+            height: 27.96mm;
+            left: .9mm;
+            text-align: center;
+        }
+
+        #T8902 > div {
+            position: absolute;
+            width: 6.3mm;
+            height: 6.3mm;
+            border: 1.35mm solid #000;
+        }
+
+        #T8902 > div:nth-child(1) {
+            top: 0;
+            left: 0;
+            border-bottom: none;
+            border-right: none;
+        }
+
+        #T8902 > div:nth-child(2) {
+            top: 0;
+            right: 0;
+            border-bottom: none;
+            border-left: none;
+        }
+
+        #T8902 > div:nth-child(3) {
+            bottom: 0;
+            left: 0;
+            border-top: none;
+            border-right: none;
+        }
+
+        #T8902 > div:nth-child(4) {
+            bottom: 0;
+            right: 0;
+            border-top: none;
+            border-left: none;
+        }
+
+        #T8902 > img {
+            margin-top: 3.88mm;
+        }
+
+        /* Shop delivery Service barcode (Mondial Relay) */
+        #shd-barcode {
+            top: 29.77mm;
+            left: 30.67mm;
+            width: 36.08mm;
+            text-align: center;
+        }
+        #shd-barcode p, img {
+            margin-bottom: 1.35mm;
+        }
+        #shd-barcode img {
+            width: 36.08mm;
+            height: auto;
+        }
+        #shd-barcode p:first-child {
+            font-size: 12.6pt;
+        }
+        #shd-barcode p:last-child {
+            font-size: 9pt;
+        }
+
+
+        /* Code datamatrix secondaire */
+        #T8903 {
+            top: 31.57mm;
+            left: 71mm;
+        }
+
+        /* ------- Control bar 4 ------- */
+
+        /* Dépôt GLS expé */
+        #T500 {
+            top: 58.45mm;
+            left: .9mm;
+            font-size: 11.7pt;
+        }
+
+        /* Date */
+        #T540 {
+            top: 60mm;
+            left: 21.65mm;
+            font-size: 5.4pt;
+        }
+
+        /* Heure */
+        #T541 {
+            top: 60mm;
+            left: 31.57mm;
+            font-size: 5.4pt;
+        }
+
+        /* "kg" */
+        #kg {
+            top: 58.8mm;
+            left: 49.6mm;
+            font-size: 9.9pt;
+            text-transform: uppercase;
+        }
+
+        /* Poids */
+        #T530 {
+            text-align: right;
+            top: 58.8mm;
+            right: 43.3mm;
+            font-size: 9.9pt;
+        }
+
+        /* T8904 "/" T8905 */
+        #numbers {
+            top: 59.5mm;
+            left: 57.7mm;
+            font-size: 5.4pt;
+        }
+
+        /* ------- Frame 1 ------- */
+
+        #frame-1 {
+            left: .9mm;
+            top: 63.14mm;
+            width: 70.6mm;
+            height: 31mm;
+            padding-left: .9mm;
+        }
+        #frame-1 .data {
+            position: relative;
+        }
+        #frame-1 p {
+            font-size: 10pt;
+            margin-top: 2.62mm;
+        }
+
+        /* Libellé service */
+        #T750 {}
+        /* Nom prénom  destination */
+        #T751 {}
+        /* {# TODO #} ??? destinataire */
+        #T752 {}
+        /* Téléphones destinataire */
+        #T871, #T1230 {
+            font-size: 9pt !important;
+        }
+
+        /* ------- Frame 2 ------- */
+
+        #frame-2 {
+            left: .9mm;
+            top: 94mm;
+            width: 70.6mm;
+            height: 28mm;
+            padding-left: .9mm;
+        }
+        #frame-2 .data {
+            position: relative;
+        }
+        #frame-2 p {
+            margin-top: 1.35mm;
+            font-size: 8pt;
+        }
+
+        /* Référence destinataire */
+        #T859 {
+            margin-top: 1.35mm;
+            margin-right: .9mm;
+            font-size: 6.3pt !important;
+            text-align: right;
+        }
+        /* Raison sociale destinataire */
+        #T860 {}
+        /* TODO ??? */
+        #T861, #T862 {}
+        /* Adresse destinataire */
+        #T863 {}
+        /* Pays, code postal et ville destinataire */
+        #T110-330-864 {
+
+        }
+
+        /* ------- Frame 3 ------- */
+
+        #frame-3 {
+            left: .9mm;
+            top: 121.77mm;
+            width: 70.6mm;
+            height: 15.56mm;
+        }
+
+        /* ------- Frame 4 ------- */
+
+        #frame-4 {
+            left: 91.33mm;
+            top: 63.14mm;
+            width: 74.15mm;
+            height: 20.07mm;
+            transform: rotate(90deg);
+            transform-origin: top left;
+        }
+
+        #sender {
+            font-size: 8.12pt;
+            font-weight: bold;
+            top: 1.1mm;
+            left: 0.45mm;
+        }
+
+        /* Client / Contact ID */
+        #T8915 {
+            font-size: 7.76pt;
+            top: 1.17mm;
+            left: 18.22mm;
+        }
+
+        /* Sender address */
+        #T810 {
+            top: 4.96mm;
+            left: 2mm;
+            font-size: 7.2pt;
+            line-height: 1.26;
+        }
+
+        /* Sender country / postal code / city */
+        #T821 {
+            left: 2mm;
+            font-size: 8pt;
+            top: 16.42mm;
+        }
+
+        #error {
+            font-size: 7.2pt;
+        }
+
+        #error th, td {
+            text-align: left;
+            padding: .36mm;
+        }
+    </style>
+
+    {% block head %}{% endblock head %}
+</head>
+<body>
+
+    {% for label in labels %}
+        {% if loop.index0 % 4 == 0 %}<div class="container">{% endif %}
+
+        <div class="label">
+        {% if label['RESULT'] != 'E000' %}
+            <div id="error">
+                <p>ERROR</p>
+                <table>
+                {% for key, value in label %}
+                    <tr>
+                        <th>{{ key }}</th>
+                        <td>{{ value }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <div id="control-bar-1" class="control-bar"></div>
+
+            {# Clé tri expedition #}
+            {{ macro.data(label, 'T110') }}
+            {# Clé de tri réception #}
+            {{ macro.data(label, 'T310', 'alt center') }}
+            {# Pays livraison Euro express (same T105) #}
+            {{ macro.data(label, 'T100', 'center') }}
+            {# Pays livraison Business express #}
+            {{ macro.data(label, 'T105', 'center') }}
+            {# Dépôt GLS livraison #}
+            {{ macro.data(label, 'T101', 'alt center') }}
+
+            <div id="control-bar-2" class="control-bar"></div>
+
+            {# Code tournée #}
+            {{ macro.data(label, 'T320') }}
+            {# Code postal label #}
+            <div id="T8951" class="data">ZipCode</div>
+            {# Code postal value #}
+            {{ macro.data(label, 'T330') }}
+            {# GLS track label #}
+            <div id="T8952" class="data">Your GLS Track ID</div>
+            {# GLS track ID #}
+            {{ macro.data(label, 'T8913') }}
+            {# Service Shod Delivery #}
+            {{ macro.data(label, 'T200') }}
+            {#<div id="T200" class="data">{{ label['T200'] }}</div>#}
+
+            <div id="control-bar-3" class="control-bar"></div>
+
+            {# Code datamatrix principal #}
+            <div id="T8902" class="data datamatrix">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <img src="data:image/png;base64,{{ label['T8902']|barcode_datamatrix|raw }}"/>
+            </div>
+
+            {# Specific to Shop Delivery Service #}
+            {% if label['T200'] is defined and label['T200'] == 'SHD' %}
+            <div id="shd-barcode" class="data">
+                <p>Mondial Relay</p>
+                <img src="data:image/png;base64,{{ ('GLS' ~ label['T8913'])|barcode_128|raw }}"/>
+                <p>GLS{{ label['T8913'] }}</p>
+            </div>
+            {% endif %}
+
+            {# Code datamatrix secondaire #}
+            <div id="T8903" class="data datamatrix">
+                <img src="data:image/png;base64,{{ label['T8903']|barcode_datamatrix|raw }}"/>
+            </div>
+
+            <div id="control-bar-4" class="control-bar"></div>
+
+            {# Dépôt GLS expé #}
+            {{ macro.data(label, 'T500') }}
+            {# Date #}
+            {{ macro.data(label, 'T540') }}
+            {# Heure #}
+            {{ macro.data(label, 'T541') }}
+
+            {# Poids valeur #}
+            <div id="kg" class="data">kg</div>
+            {{ macro.data(label, 'T530') }}
+
+            {# Info expédition valeur 1 #}
+            <div id="numbers" class="data">{{ label['T8904'] }}/{{ label['T8702'] }}</div>
+
+
+            <div id="frame-1" class="frame">
+                {# Libellé service #}
+                <p id="T750" class="data">
+                {%- if label['T750'] is defined -%}
+                    {{- label['T750'] -}}
+                {%- elseif label['T200'] is defined and label['T200'] == 'T13' -%}
+                    13.00SERVICE
+                {%- endif -%}
+                </p>
+
+                {# Specific to Shop Delivery Service #}
+                {% if label['T200'] is defined and label['T200'] == 'SHD' %}
+                    {# Nom prénom destinataire #}
+                    <p id="T751" class="data">c/o : {{ label['T751'] }}</p>
+                    {# TODO ??? destinataire #}
+                    <p id="T752" class="data">{{ label['T752']|default('&nbsp;')|raw }}</p>
+                    {# Téléphones destinataire #}
+                    {% if label['T1230'] is defined %}
+                        <p id="T1230" class="data">{{ label['T1230'] }}</p> {# Portable #}
+                    {% elseif label['T871'] is defined %}
+                        <p id="T871" class="data">{{ label['T871'] }}</p> {# Téléphone #}
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div id="frame-2" class="frame">
+                {# Référence destinataire #}
+                <p id="T859">
+                {%- if label['T859'] is not empty -%}
+                    Ref Dest: {{ label['T859'] }}
+                {%- else -%}
+                    &nbsp;
+                {%- endif -%}
+                </p>
+                {# Raison sociale destinataire #}
+                <p id="T860" class="data">{{ label['T860']|default('&nbsp;')|raw }}</p>
+                {# Rue destinataire #}
+                <p id="T863" class="data">{{ label['T863']|default('&nbsp;')|raw }}</p>
+                {# Complément 1 address destinataire #}
+                <p id="T861" class="data">{{ label['T861']|default('&nbsp;')|raw }}</p>
+                {# Complément 2 address destinataire #}
+                <p id="T862" class="data">{{ label['T862']|default('&nbsp;')|raw }}</p>
+
+                {# Pays destinataire #}
+                <p id="T110-330-864" class="data">
+                    {{ label['T100'] }} {{ label['T330'] }} {{ label['T864'] }}
+                </p>
+            </div>
+
+            <div id="frame-3" class="frame">
+                {# TODO informations supplémentaires#}
+            </div>
+
+            <div id="frame-4" class="frame">
+                <p id="sender" class="data">Expediteur</p>
+                <p id="T8915" class="data">
+                    Client {{ label['T8915'] }} Contact ID {{ label['T8914'] }}
+                </p>
+                <p id="T810" class="data">
+                    {{ label['T810'] }}<br>
+                    {{ label['T820'] }}<br>
+                    {# TODO ? #}
+                </p>
+                <p id="T821" class="data">
+                    {{ label['T821'] }} {{ label['T822'] }} {{ label['T823'] }}
+                </p>
+            </div>
+        {% endif %}
+        </div>
+
+        {% if loop.index % 4 == 0 %}</div>{% endif %}
+    {% endfor %}
+
+    {% block body %}{% endblock body %}
+
+</body>
+</html>

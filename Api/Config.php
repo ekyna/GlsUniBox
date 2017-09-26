@@ -168,12 +168,12 @@ class Config
     const T090 = 'T090';
 
     /**
-     * Service Shod Delivery ("SHD") (max. 3) [mandatory]
+     * Code service (ex: "SHD") (max. 3) [mandatory]
      */
     const T200 = 'T200';
 
     /**
-     * Libellé service ("ShopDelivery-Service") [mandatory]
+     * Libellé service (ex: "ShopDelivery-Service") [mandatory]
      */
     const T750 = 'T750';
 
@@ -225,9 +225,14 @@ class Config
     const T8903 = 'T8903';
 
     /**
-     * Code erreur (max. 106)
+     * Resultat (code erreur)
      */
     const RESULT = 'RESULT';
+
+    /**
+     * Champ erreur
+     */
+    const FIELD = 'FIELD';
 
 
     /**
@@ -237,9 +242,9 @@ class Config
      *
      * @return array
      */
-    static public function getRequestConfig($code = Product::BP)
+    static public function getRequestConfig($code = Service::BP)
     {
-        Product::isValid($code);
+        Service::isValid($code);
 
         $config = [
             static::T540  => ['Date expédition format AAAAMMJJ', true, 8],
@@ -275,7 +280,7 @@ class Config
             static::T090  => ['Constante : NOSAVE ', true, 1042],
         ];
 
-        if ($code === Product::EBP) {
+        if ($code === Service::EBP) {
             // Spécificités livraisons Shop Delivery Service
             $config = array_replace($config, [
                 static::T200  => ['Service Shod Delivery ("SHD")', true, 3],
@@ -288,7 +293,7 @@ class Config
                 static::T8905 => ['Nombre total colis Expédition ("1")', true, 3],
                 static::T8702 => ['Nombre total colis Expédition ("1")', true, 3],
             ]);
-        } else if ($code === Product::EP) {
+        } else if ($code === Service::EP) {
             // Spécificités livraison Express Parcel Guaranteed
             $config = array_replace($config, [
                 static::T200  => ['13:00 service ("T13")', true, 3],
@@ -298,7 +303,7 @@ class Config
                 static::T8905 => ['Nombre total colis Expédition ("1")', true, 3],
                 static::T8702 => ['Nombre total colis Expédition ("1")', true, 3],
             ]);
-        } else if ($code === Product::FDF) {
+        } else if ($code === Service::FDF) {
             // Spécificités livraison Flex Delivery Service
             $config = array_replace($config, [
                 static::T200  => ['Service Flex Delivery Service ("FDF")', true, 3],

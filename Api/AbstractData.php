@@ -59,4 +59,20 @@ abstract class AbstractData
 
         return null;
     }
+
+    /**
+     * Removes keys with empty value.
+     *
+     * @return $this
+     */
+    public function clean()
+    {
+        foreach ($this->data as $key => $data) {
+            if (empty($data)) {
+                unset($this->data[$key]);
+            }
+        }
+
+        return $this;
+    }
 }

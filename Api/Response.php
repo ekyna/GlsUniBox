@@ -11,7 +11,10 @@ use Ekyna\Component\GlsUniBox\Exception\InvalidArgumentException;
  */
 class Response extends AbstractData
 {
-    const E_SUCCESS = 'E000';
+    const E_CODE = 'E_CODE';
+    const E_FIELD = 'E_FIELD';
+
+    const SUCCESS = 'E000';
 
 
     /**
@@ -39,10 +42,21 @@ class Response extends AbstractData
 
         $response = new static();
 
-        for ($i = 0; $i < count($parts) - 2; $i++) {
-            list($key, $value) = explode(':', $parts[$i]);
+        for ($i = 0; $i < count($parts); $i++) {
+            list($key, $value) = explode(':', $parts[$i], 2);
 
-            $response->set($key, $value);
+            if ($key === Config::RESULT) {
+                if (0 < strpos($value, ':')) {
+                    list($code, $field) = explode(':', $value, 2);
+                } else {
+                    $code = $value;
+                    $field = 'unknown';
+                }
+                $response->set(Config::RESULT, $code);
+                $response->set(Config::FIELD, $field);
+            } else {
+                $response->set($key, $value);
+            }
         }
 
         return $response;
@@ -55,7 +69,7 @@ class Response extends AbstractData
      */
     public function isSuccessful()
     {
-        return $this->getErrorCode() === static::E_SUCCESS;
+        return $this->getErrorCode() === static::SUCCESS;
     }
 
     /**
