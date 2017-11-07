@@ -1,4 +1,4 @@
 ekyna/GlsUniBox
 ==============
 
-PHP library to management shipments through the GLS uni box endpoint.
+PHP library for shipment management through the GLS uni box API.

@@ -2,6 +2,8 @@
 
 namespace Ekyna\Component\GlsUniBox\Api;
 
+use Ekyna\Component\GlsUniBox\Exception\InvalidArgumentException;
+
 /**
  * Class Request
  * @package Ekyna\Component\GlsUniBox\Api
@@ -103,6 +105,10 @@ class Request extends AbstractData
      */
     public function setWeight($weight)
     {
+        if ($weight < 0.1) {
+            throw new InvalidArgumentException("Expected weight greater than 100g.");
+        }
+
         $this->set(Config::T530, (string) round($weight, 2));
 
         return $this;
