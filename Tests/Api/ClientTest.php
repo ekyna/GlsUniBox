@@ -24,7 +24,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function test_simple_request()
     {
-        $request = new Request();
+        $request = new Request(1);
         $request
             ->setDate(new \DateTime())
             ->setReceiverReference('TEST01')

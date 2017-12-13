@@ -18,6 +18,11 @@ class Config
     const T540 = 'T540';
 
     /**
+     * Heure expédition format HHII (max. 8) [mandatory]
+     */
+    const T541 = 'T541';
+
+    /**
      * Poids format xx.xx (max. 5) [mandatory]
      */
     const T530 = 'T530';
@@ -53,9 +58,14 @@ class Config
     const T864 = 'T864';
 
     /**
-     * Pays Destinataire (max. 2) [mandatory]
+     * Pays Destinataire Euro express (max. 2) [mandatory]
      */
     const T100 = 'T100';
+
+    /**
+     * Pays Destinataire Business express (max. 2) [mandatory]
+     */
+    const T105 = 'T105';
 
     /**
      * Commentaires (max. 35)
@@ -178,6 +188,16 @@ class Config
     const T750 = 'T750';
 
     /**
+     * Destinataire 1
+     */
+    const T751 = 'T751';
+
+    /**
+     * Destinataire 2
+     */
+    const T752 = 'T752';
+
+    /**
      * Identifiant Point relais (max. 10) [mandatory]
      */
     const T8237 = 'T8237';
@@ -210,6 +230,11 @@ class Config
     const T320 = 'T320';
 
     /**
+     * Dépôts GLS expédition (max. 4)
+     */
+    const T500 = 'T500';
+
+    /**
      * GLS TrackId (max. 8)
      */
     const T8913 = 'T8913';
@@ -223,6 +248,16 @@ class Config
      * Datamatrix secondaire (max. 106)
      */
     const T8903 = 'T8903';
+
+    /**
+     * "Your GLS track ID"
+     */
+    const T8951 = 'T8951';
+
+    /**
+     * "ZipCode"
+     */
+    const T8952 = 'T8952';
 
     /**
      * Resultat (code erreur)

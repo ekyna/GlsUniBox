@@ -12,6 +12,11 @@ use Ekyna\Component\GlsUniBox\Exception\InvalidArgumentException;
 class Request extends AbstractData
 {
     /**
+     * @var int
+     */
+    private $number;
+
+    /**
      * @var string
      */
     private $service;
@@ -20,10 +25,12 @@ class Request extends AbstractData
     /**
      * Constructor.
      *
+     * @param int    $number
      * @param string $service
      */
-    public function __construct($service = Service::BP)
+    public function __construct($number, $service = Service::BP)
     {
+        $this->number = $number;
         $this->setService($service);
 
         $this->set(Config::T8973, 1);
@@ -76,10 +83,10 @@ class Request extends AbstractData
          *
          * Exemple : T8975:0200000000800000FR */
 
-         return Service::getNumerical($this->service) .
-             str_pad($this->get(Config::T859), 10, '0', STR_PAD_LEFT) .
-             '0000' .
-             $this->get(Config::T100);
+        return Service::getNumerical($this->service) .
+            str_pad($this->number, 10, '0', STR_PAD_LEFT) .
+            '0000' .
+            $this->get(Config::T100);
     }
 
     /**
@@ -109,7 +116,7 @@ class Request extends AbstractData
             throw new InvalidArgumentException("Expected weight greater than 100g.");
         }
 
-        $this->set(Config::T530, (string) round($weight, 2));
+        $this->set(Config::T530, (string)round($weight, 2));
 
         return $this;
     }
@@ -147,7 +154,7 @@ class Request extends AbstractData
      */
     public function setReceiverCompany($name)
     {
-        $this->set(Config::T860, (string) $name);
+        $this->set(Config::T860, (string)$name);
 
         return $this;
     }
@@ -161,7 +168,7 @@ class Request extends AbstractData
      */
     public function setReceiverStreet($street)
     {
-        $this->set(Config::T863, (string) $street);
+        $this->set(Config::T863, (string)$street);
 
         return $this;
     }
@@ -175,7 +182,7 @@ class Request extends AbstractData
      */
     public function setReceiverSupplement1($supplement)
     {
-        $this->set(Config::T861, (string) $supplement);
+        $this->set(Config::T861, (string)$supplement);
 
         return $this;
     }
@@ -189,7 +196,7 @@ class Request extends AbstractData
      */
     public function setReceiverSupplement2($supplement)
     {
-        $this->set(Config::T862, (string) $supplement);
+        $this->set(Config::T862, (string)$supplement);
 
         return $this;
     }
@@ -203,7 +210,7 @@ class Request extends AbstractData
      */
     public function setReceiverPostalCode($postalCode)
     {
-        $this->set(Config::T330, (string) $postalCode);
+        $this->set(Config::T330, (string)$postalCode);
 
         return $this;
     }
@@ -217,7 +224,7 @@ class Request extends AbstractData
      */
     public function setReceiverCity($city)
     {
-        $this->set(Config::T864, (string) $city);
+        $this->set(Config::T864, (string)$city);
 
         return $this;
     }
@@ -245,7 +252,7 @@ class Request extends AbstractData
      */
     public function setReceiverComment($comment)
     {
-        $this->set(Config::T8906, (string) $comment);
+        $this->set(Config::T8906, (string)$comment);
 
         return $this;
     }
@@ -259,7 +266,7 @@ class Request extends AbstractData
      */
     public function setReceiverPhone($number)
     {
-        $this->set(Config::T871, (string) $number);
+        $this->set(Config::T871, (string)$number);
 
         return $this;
     }
@@ -273,7 +280,7 @@ class Request extends AbstractData
      */
     public function setReceiverMobile($number)
     {
-        $this->set(Config::T1230, (string) $number);
+        $this->set(Config::T1230, (string)$number);
 
         return $this;
     }
@@ -287,7 +294,7 @@ class Request extends AbstractData
      */
     public function setReceiverEmail($number)
     {
-        $this->set(Config::T1229, (string) $number);
+        $this->set(Config::T1229, (string)$number);
 
         return $this;
     }
@@ -301,7 +308,7 @@ class Request extends AbstractData
      */
     public function setReceiverReference($reference)
     {
-        $this->set(Config::T859, (string) $reference);
+        $this->set(Config::T859, (string)$reference);
 
         return $this;
     }
@@ -315,7 +322,7 @@ class Request extends AbstractData
      */
     public function setReceiverReference2($reference)
     {
-        $this->set(Config::T854, (string) $reference);
+        $this->set(Config::T854, (string)$reference);
 
         return $this;
     }
@@ -329,7 +336,7 @@ class Request extends AbstractData
      */
     public function setReceiverReference3($reference)
     {
-        $this->set(Config::T8908, (string) $reference);
+        $this->set(Config::T8908, (string)$reference);
 
         return $this;
     }
@@ -343,7 +350,7 @@ class Request extends AbstractData
      */
     public function setSenderCompany($name)
     {
-        $this->set(Config::T810, (string) $name);
+        $this->set(Config::T810, (string)$name);
 
         return $this;
     }
@@ -357,7 +364,7 @@ class Request extends AbstractData
      */
     public function setSenderStreet($street)
     {
-        $this->set(Config::T820, (string) $street);
+        $this->set(Config::T820, (string)$street);
 
         return $this;
     }
@@ -385,7 +392,7 @@ class Request extends AbstractData
      */
     public function setSenderPostalCode($postalCode)
     {
-        $this->set(Config::T822, (string) $postalCode);
+        $this->set(Config::T822, (string)$postalCode);
 
         return $this;
     }
@@ -399,7 +406,7 @@ class Request extends AbstractData
      */
     public function setSenderCity($city)
     {
-        $this->set(Config::T823, (string) $city);
+        $this->set(Config::T823, (string)$city);
 
         return $this;
     }
@@ -413,7 +420,7 @@ class Request extends AbstractData
      */
     public function setGLSShipmentDeposit($deposit)
     {
-        $this->set(Config::T8700, (string) $deposit);
+        $this->set(Config::T8700, (string)$deposit);
 
         return $this;
     }
@@ -427,7 +434,7 @@ class Request extends AbstractData
      */
     public function setCustomerCode($code)
     {
-        $this->set(Config::T8915, (string) $code);
+        $this->set(Config::T8915, (string)$code);
 
         return $this;
     }
@@ -441,7 +448,7 @@ class Request extends AbstractData
      */
     public function setContactId($id)
     {
-        $this->set(Config::T8914, (string) $id);
+        $this->set(Config::T8914, (string)$id);
 
         return $this;
     }
@@ -455,8 +462,8 @@ class Request extends AbstractData
      */
     public function setParcelNumber($number)
     {
-        $this->set(Config::T8904, (string) $number);
-        $this->set(Config::T8973, (string) $number);
+        $this->set(Config::T8904, (string)$number);
+        $this->set(Config::T8973, (string)$number);
 
         return $this;
     }
@@ -470,8 +477,8 @@ class Request extends AbstractData
      */
     public function setParcelCount($count)
     {
-        $this->set(Config::T8905, (string) $count);
-        $this->set(Config::T8702, (string) $count);
+        $this->set(Config::T8905, (string)$count);
+        $this->set(Config::T8702, (string)$count);
 
         return $this;
     }
@@ -485,7 +492,7 @@ class Request extends AbstractData
      */
     public function setOriginReference($count)
     {
-        $this->set(Config::T8975, (string) $count);
+        $this->set(Config::T8975, (string)$count);
 
         return $this;
     }
