@@ -9,7 +9,7 @@ use Ekyna\Component\GlsUniBox\Exception\RuntimeException;
  * @package Ekyna\Component\GlsUniBox\Generator
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class NumberGenerator
+class NumberGenerator implements NumberGeneratorInterface
 {
     /**
      * @var string
@@ -33,7 +33,7 @@ class NumberGenerator
     }
 
     /**
-     * Generates the number.
+     * @inheritdoc
      */
     public function generate()
     {
@@ -53,8 +53,6 @@ class NumberGenerator
      */
     private function readNumber()
     {
-        $doRead = file_exists($this->path) && date('Ym') === date('Ym', filemtime($this->path));
-
         // Open
         if (false === $this->handle = fopen($this->path, 'c+')) {
             throw new RuntimeException("Failed to open file {$this->path}.");
@@ -64,7 +62,7 @@ class NumberGenerator
             throw new RuntimeException("Failed to lock file {$this->path}.");
         }
 
-        if ($doRead && false !== $number = fread($this->handle, 10)) {
+        if (false !== $number = fread($this->handle, 10)) {
             return intval($number);
         }
 

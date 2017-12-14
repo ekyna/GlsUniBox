@@ -130,7 +130,7 @@ class LabelRenderer
 
         // Primary barcode
         $matrix = imagecreatefromstring($this->getBarcodeDatamatrix($data[Config::T8902]));
-        imagecopy($this->image, $matrix, 52, 400, 0, 0, imagesx($matrix), imagesy($matrix));
+        imagecopy($this->image, $matrix, 57, 398, 0, 0, imagesx($matrix), imagesy($matrix));
         imagedestroy($matrix);
 
         // Mondial relay
