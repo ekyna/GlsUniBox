@@ -48,19 +48,21 @@ class Request extends AbstractData
     {
         $parts = [static::START_TOKEN];
 
+        $data = $this->getData();
+
         foreach ($this->getData() as $key => $value) {
             $parts[] = $key . ':' . $value;
         }
 
-        if (!isset($parts[Config::T8975])) {
-            $parts[Config::T8975] = $this->buildOriginReference();
+        if (!isset($data[Config::T8975]) || empty($data[Config::T8975])) {
+            $parts[] = Config::T8975 . ':' . $this->buildOriginReference();
         }
 
         if ($this->get(Config::T100) === 'FR') {
-            $parts[Config::T082] = 'UNIQUENO';
+            $parts[] = Config::T082 . ':UNIQUENO';
         }
 
-        $parts[Config::T090] = 'NOSAVE';
+        $parts[] = Config::T090 . ':NOSAVE';
 
         $parts[] = static::END_TOKEN;
 
