@@ -16,9 +16,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     private function createClient()
     {
         return new Client([
-            Config::T8700 => 'FR0031',
-            Config::T8915 => '2500011329',
-            Config::T8914 => '2501369229',
+            Config::T8700 => $_ENV['T8700'],
+            Config::T8915 => $_ENV['T8915'],
+            Config::T8914 => $_ENV['T8914'],
         ]);
     }
 

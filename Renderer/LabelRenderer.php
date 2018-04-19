@@ -170,7 +170,7 @@ class LabelRenderer
         // Téléphones
         if (isset($data[Config::T1230])) {
             $this->text($data[Config::T1230], 38, 30, 1175);
-        } elseif ($data[Config::T871]) {
+        } elseif (isset($data[Config::T871])) {
             $this->text($data[Config::T871], 38, 30, 1175);
         }
 

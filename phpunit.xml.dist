@@ -13,6 +13,11 @@
         <ini name="intl.default_locale" value="en" />
         <ini name="intl.error_level" value="0" />
         <ini name="memory_limit" value="-1" />
+
+        <!-- Fill your credential here -->
+        <env name="T8700" value=""/>
+        <env name="T8915" value=""/>
+        <env name="T8914" value=""/>
     </php>
 
     <testsuites>
