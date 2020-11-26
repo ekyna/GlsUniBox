@@ -15,22 +15,22 @@ class LabelRenderer
     /**
      * @var array
      */
-    private $layout;
+    protected $layout;
 
     /**
      * @var array
      */
-    private $fonts;
+    protected $fonts;
 
     /**
      * @var array
      */
-    private $colors;
+    protected $colors;
 
     /**
      * @var resource
      */
-    private $image;
+    protected $image;
 
 
     /**
@@ -47,6 +47,31 @@ class LabelRenderer
         $this->build($data);
 
         return $this->getImageData();
+    }
+    
+    /**
+    * Get rendered's value
+    *
+    * @var string $property
+    *
+    * @return mixed
+    */
+   public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+    }
+
+     /**
+    * Let overide the renderer
+    *
+    * @var string $property
+    * @var string $value
+    */
+    public function __set($property, $value) {
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
+        }
     }
 
     /**
@@ -111,7 +136,7 @@ class LabelRenderer
      *
      * @param array $data
      */
-    private function build(array $data)
+    protected function build(array $data)
     {
         foreach ($this->layout as $key => $c) {
             if (!isset($data[$key]) || 0 === strlen($value = $data[$key])) {
