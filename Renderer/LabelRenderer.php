@@ -50,28 +50,67 @@ class LabelRenderer
     }
     
     /**
-    * Get rendered's value
-    *
-    * @var string $property
-    *
-    * @return mixed
-    */
-   public function __get($property) {
-        if (property_exists($this, $property)) {
-            return $this->$property;
-        }
+    * @return array
+    */    
+    public function getLayout() {
+        return $this->layout;
     }
-
-     /**
-    * Let overide the renderer
-    *
-    * @var string $property
-    * @var string $value
+    
+    /**
+    * @return array
     */
-    public function __set($property, $value) {
-        if (property_exists($this, $property)) {
-            $this->$property = $value;
-        }
+    public function getFonts() {
+        return $this->fonts;
+    }
+    
+    /**
+    * @return array
+    */
+    public function getColors() {
+        return $this->colors;
+    }
+    
+    /**
+    * @return ressource
+    */
+    public function getImage() {
+        return $this->image;
+    }
+    
+    /**
+    * @var array $layout
+    * @return array|boolean
+    */    
+    public function setLayout($layout) {
+        if (!is_array($layout)) return false;
+        return ($this->layout = $layout);
+    }
+    
+    /**
+    * @var array $fonts    
+    * @return array|boolean
+    */
+    public function setFonts($fonts) {
+        if (!is_array($fonts)) return false;
+        return ($this->fonts = $fonts);
+    }
+    
+    /**
+    * @var array $colors
+    * @return array|boolean
+    */
+    public function setColors($colors) {
+        if (!is_array($colors)) return false;
+        return ($this->colors = $colors);
+    }
+    
+    /**
+    * @var ressource $image
+    * @return ressource|boolean
+    */
+    public function setImage($image) {
+        if (!is_resource($image)) return false;
+        return ($this->image = $image);
     }
 
     /**
