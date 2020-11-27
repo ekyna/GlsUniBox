@@ -15,22 +15,22 @@ class LabelRenderer
     /**
      * @var array
      */
-    private $layout;
+    protected $layout;
 
     /**
      * @var array
      */
-    private $fonts;
+    protected $fonts;
 
     /**
      * @var array
      */
-    private $colors;
+    protected $colors;
 
     /**
      * @var resource
      */
-    private $image;
+    protected $image;
 
 
     /**
@@ -47,6 +47,70 @@ class LabelRenderer
         $this->build($data);
 
         return $this->getImageData();
+    }
+    
+    /**
+    * @return array
+    */    
+    public function getLayout() {
+        return $this->layout;
+    }
+    
+    /**
+    * @return array
+    */
+    public function getFonts() {
+        return $this->fonts;
+    }
+    
+    /**
+    * @return array
+    */
+    public function getColors() {
+        return $this->colors;
+    }
+    
+    /**
+    * @return ressource
+    */
+    public function getImage() {
+        return $this->image;
+    }
+    
+    /**
+    * @var array $layout
+    * @return array|boolean
+    */    
+    public function setLayout($layout) {
+        if (!is_array($layout)) return false;
+        return ($this->layout = $layout);
+    }
+    
+    /**
+    * @var array $fonts    
+    * @return array|boolean
+    */
+    public function setFonts($fonts) {
+        if (!is_array($fonts)) return false;
+        return ($this->fonts = $fonts);
+    }
+    
+    /**
+    * @var array $colors
+    * @return array|boolean
+    */
+    public function setColors($colors) {
+        if (!is_array($colors)) return false;
+        return ($this->colors = $colors);
+    }
+    
+    /**
+    * @var ressource $image
+    * @return ressource|boolean
+    */
+    public function setImage($image) {
+        if (!is_resource($image)) return false;
+        return ($this->image = $image);
     }
 
     /**
@@ -111,7 +175,7 @@ class LabelRenderer
      *
      * @param array $data
      */
-    private function build(array $data)
+    protected function build(array $data)
     {
         foreach ($this->layout as $key => $c) {
             if (!isset($data[$key]) || 0 === strlen($value = $data[$key])) {
