@@ -108,7 +108,7 @@ class Request extends AbstractData
     /**
      * Sets the weight (xx.xx kg) (T530).
      *
-     * @param float $weight
+     * @param string $weight
      *
      * @return $this
      */
@@ -118,7 +118,7 @@ class Request extends AbstractData
             throw new InvalidArgumentException("Expected weight greater than 100g.");
         }
 
-        $this->set(Config::T530, (string)round($weight, 2));
+        $this->set(Config::T530, $weight);
 
         return $this;
     }
