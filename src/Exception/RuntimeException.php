@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Component\GlsUniBox\Exception;
 
 /**
- * Class InvalidArgumentException
+ * Class RuntimeException
  * @package Ekyna\Component\GlsUniBox\Exception
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 
 }

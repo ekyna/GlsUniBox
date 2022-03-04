@@ -1,19 +1,15 @@
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.2/phpunit.xsd"
-        backupGlobals="true"
-        colors="true"
-        bootstrap="./vendor/autoload.php"
-        beStrictAboutTestsThatDoNotTestAnything="true"
-        beStrictAboutCoversAnnotation="true"
->
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         bootstrap="tests/bootstrap.php">
 
     <php>
-        <ini name="error_reporting" value="-1" />
-        <ini name="intl.default_locale" value="en" />
-        <ini name="intl.error_level" value="0" />
-        <ini name="memory_limit" value="-1" />
-
         <!-- Fill your credential here -->
         <env name="T8700" value=""/>
         <env name="T8915" value=""/>
@@ -21,15 +17,16 @@
     </php>
 
     <testsuites>
-        <testsuite name="Ekyna Component Test Suite">
-            <directory>./Tests/</directory>
+        <testsuite name="Ekyna GlsUniBox Test Suite">
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./Tests</directory>
+            <directory>./src</directory>
             <exclude>
+                <directory>./tests</directory>
                 <directory>./vendor</directory>
             </exclude>
         </whitelist>

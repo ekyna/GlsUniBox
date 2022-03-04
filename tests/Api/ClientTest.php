@@ -1,19 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Component\GlsUniBox\Tests\Api;
 
+use DateTime;
 use Ekyna\Component\GlsUniBox\Api\Client;
 use Ekyna\Component\GlsUniBox\Api\Config;
 use Ekyna\Component\GlsUniBox\Api\Request;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ClientTest
  * @package Ekyna\Component\GlsUniBox\Tests\Api
  * @author  Etienne Dauvergne <contact@ekyna.com>
  */
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
-    private function createClient()
+    private function createClient(): Client
     {
         return new Client([
             Config::T8700 => $_ENV['T8700'],
@@ -22,15 +26,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    public function test_simple_request()
+    public function testSimpleRequest(): void
     {
-        $request = new Request(1);
+        $request = new Request(123);
         $request
-            ->setDate(new \DateTime())
+            ->setDate(new DateTime())
             ->setReceiverReference('TEST01')
             ->setReceiverCompany('GLS Bordeaux')
             ->setOriginReference('0200000000050000FR')
-            ->setWeight(12.32)
+            ->setWeight('12.32')
             ->setReceiverStreet('ALLEE DE GASCOGNE')
             ->setReceiverSupplement2('LOT. FEYDEAU OUEST')
             ->setReceiverCountry('FR')

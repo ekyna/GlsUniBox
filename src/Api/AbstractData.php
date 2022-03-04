@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Component\GlsUniBox\Api;
 
 /**
@@ -9,14 +11,10 @@ namespace Ekyna\Component\GlsUniBox\Api;
  */
 abstract class AbstractData
 {
-    const START_TOKEN = '\\\\\\\\\\GLS\\\\\\\\\\';
-    const END_TOKEN   = '/////GLS/////';
+    public const START_TOKEN = '\\\\\\\\\\GLS\\\\\\\\\\';
+    public const END_TOKEN   = '/////GLS/////';
 
-
-    /**
-     * @var array
-     */
-    private $data = [];
+    private array $data = [];
 
 
     /**
@@ -24,20 +22,15 @@ abstract class AbstractData
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
 
     /**
      * Sets the value for the given tag.
-     *
-     * @param string $tag
-     * @param string $value
-     *
-     * @return $this
      */
-    protected function set($tag, $value)
+    protected function set(string $tag, string $value): self
     {
         $this->data[$tag] = $value;
 
@@ -46,12 +39,8 @@ abstract class AbstractData
 
     /**
      * Returns the value for the given tag.
-     *
-     * @param string $tag
-     *
-     * @return string|null
      */
-    protected function get($tag)
+    protected function get(string $tag): ?string
     {
         if (isset($this->data[$tag])) {
             return $this->data[$tag];
@@ -62,10 +51,8 @@ abstract class AbstractData
 
     /**
      * Removes keys with empty value.
-     *
-     * @return $this
      */
-    public function clean()
+    public function clean(): self
     {
         foreach ($this->data as $key => $data) {
             if (empty($data)) {

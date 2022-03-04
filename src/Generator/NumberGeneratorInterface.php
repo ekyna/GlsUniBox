@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Component\GlsUniBox\Generator;
 
 /**
@@ -11,8 +13,6 @@ interface NumberGeneratorInterface
 {
     /**
      * Generates the number.
-     *
-     * @return int
      */
-    public function generate();
+    public function generate(): int;
 }

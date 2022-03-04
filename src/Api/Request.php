@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ekyna\Component\GlsUniBox\Api;
 
+use DateTimeInterface;
 use Ekyna\Component\GlsUniBox\Exception\InvalidArgumentException;
+
+use function implode;
 
 /**
  * Class Request
@@ -11,40 +16,31 @@ use Ekyna\Component\GlsUniBox\Exception\InvalidArgumentException;
  */
 class Request extends AbstractData
 {
-    /**
-     * @var int
-     */
-    private $number;
+    private int $number;
+    private string $service;
 
-    /**
-     * @var string
-     */
-    private $service;
-
-
-    /**
-     * Constructor.
-     *
-     * @param int    $number
-     * @param string $service
-     */
-    public function __construct($number, $service = Service::BP)
+    public function __construct(int $number, string $service = Service::BP)
     {
         $this->number = $number;
         $this->setService($service);
 
-        $this->set(Config::T8973, 1);
-        $this->set(Config::T8904, 1);
-        $this->set(Config::T8702, 1);
-        $this->set(Config::T8905, 1);
+        $this->set(Config::T8973, '1');
+        $this->set(Config::T8904, '1');
+        $this->set(Config::T8702, '1');
+        $this->set(Config::T8905, '1');
     }
 
     /**
-     * Returns the string representation.
-     *
      * @return string
+     *
+     * @deprecated Use the build() method.
      */
     public function __toString()
+    {
+        return $this->build();
+    }
+
+    public function build(): string
     {
         $parts = [static::START_TOKEN];
 
@@ -71,10 +67,8 @@ class Request extends AbstractData
 
     /**
      * Builds the GLS origin reference (T8975)
-     *
-     * @return string
      */
-    private function buildOriginReference()
+    private function buildOriginReference(): string
     {
         /* - Code produit (2 positions numériques) : voir annexe 12.2
          * - Numéro de colis (10 positions numériques) : ce numéro doit être unique. Vous le composez à votre
@@ -86,19 +80,15 @@ class Request extends AbstractData
          * Exemple : T8975:0200000000800000FR */
 
         return Service::getNumerical($this->service) .
-            str_pad($this->number, 10, '0', STR_PAD_LEFT) .
+            str_pad((string)$this->number, 10, '0', STR_PAD_LEFT) .
             '0000' .
             $this->get(Config::T100);
     }
 
     /**
      * Sets the shipment date (T540).
-     *
-     * @param \DateTime $dateTime
-     *
-     * @return $this
      */
-    public function setDate(\DateTime $dateTime)
+    public function setDate(DateTimeInterface $dateTime): Request
     {
         $this->set(Config::T540, $dateTime->format('Ymd'));
 
@@ -107,15 +97,11 @@ class Request extends AbstractData
 
     /**
      * Sets the weight (xx.xx kg) (T530).
-     *
-     * @param string $weight
-     *
-     * @return $this
      */
-    public function setWeight($weight)
+    public function setWeight(string $weight): Request
     {
         if ($weight < 0.1) {
-            throw new InvalidArgumentException("Expected weight greater than 100g.");
+            throw new InvalidArgumentException('Expected weight greater than 100g.');
         }
 
         $this->set(Config::T530, $weight);
@@ -125,12 +111,8 @@ class Request extends AbstractData
 
     /**
      * Sets the service (T200).
-     *
-     * @param string $service
-     *
-     * @return $this
      */
-    public function setService($service)
+    public function setService(string $service): Request
     {
         Service::isValid($service);
 
@@ -149,96 +131,68 @@ class Request extends AbstractData
 
     /**
      * Sets the receiver company name (T860).
-     *
-     * @param string $name
-     *
-     * @return $this
      */
-    public function setReceiverCompany($name)
+    public function setReceiverCompany(string $name): Request
     {
-        $this->set(Config::T860, (string)$name);
+        $this->set(Config::T860, $name);
 
         return $this;
     }
 
     /**
      * Sets the receiver street (T863).
-     *
-     * @param string $street
-     *
-     * @return $this
      */
-    public function setReceiverStreet($street)
+    public function setReceiverStreet(string $street): Request
     {
-        $this->set(Config::T863, (string)$street);
+        $this->set(Config::T863, $street);
 
         return $this;
     }
 
     /**
      * Sets the first receiver street supplement (T861).
-     *
-     * @param string $supplement
-     *
-     * @return $this
      */
-    public function setReceiverSupplement1($supplement)
+    public function setReceiverSupplement1(string $supplement): Request
     {
-        $this->set(Config::T861, (string)$supplement);
+        $this->set(Config::T861, $supplement);
 
         return $this;
     }
 
     /**
      * Sets the first receiver street supplement (T862).
-     *
-     * @param string $supplement
-     *
-     * @return $this
      */
-    public function setReceiverSupplement2($supplement)
+    public function setReceiverSupplement2(string $supplement): Request
     {
-        $this->set(Config::T862, (string)$supplement);
+        $this->set(Config::T862, $supplement);
 
         return $this;
     }
 
     /**
      * Sets the first receiver street supplement (T330).
-     *
-     * @param string $postalCode
-     *
-     * @return $this
      */
-    public function setReceiverPostalCode($postalCode)
+    public function setReceiverPostalCode(string $postalCode): Request
     {
-        $this->set(Config::T330, (string)$postalCode);
+        $this->set(Config::T330, $postalCode);
 
         return $this;
     }
 
     /**
      * Sets the receiver city (T864).
-     *
-     * @param string $city
-     *
-     * @return $this
      */
-    public function setReceiverCity($city)
+    public function setReceiverCity(string $city): Request
     {
-        $this->set(Config::T864, (string)$city);
+        $this->set(Config::T864, $city);
 
         return $this;
     }
 
     /**
      * Sets the receiver country code (T100).
-     *
-     * @param string $code
-     *
-     * @return $this
      */
-    public function setReceiverCountry($code)
+    public function setReceiverCountry(string $code): Request
     {
         $this->set(Config::T100, strtoupper($code));
 
@@ -247,138 +201,98 @@ class Request extends AbstractData
 
     /**
      * Sets the receiver comment (T8906).
-     *
-     * @param string $comment
-     *
-     * @return $this
      */
-    public function setReceiverComment($comment)
+    public function setReceiverComment(string $comment): Request
     {
-        $this->set(Config::T8906, (string)$comment);
+        $this->set(Config::T8906, $comment);
 
         return $this;
     }
 
     /**
      * Sets the receiver phone number (T871).
-     *
-     * @param string $number
-     *
-     * @return $this
      */
-    public function setReceiverPhone($number)
+    public function setReceiverPhone(string $number): Request
     {
-        $this->set(Config::T871, (string)$number);
+        $this->set(Config::T871, $number);
 
         return $this;
     }
 
     /**
      * Sets the receiver mobile phone number (T1230).
-     *
-     * @param string $number
-     *
-     * @return $this
      */
-    public function setReceiverMobile($number)
+    public function setReceiverMobile(string $number): Request
     {
-        $this->set(Config::T1230, (string)$number);
+        $this->set(Config::T1230, $number);
 
         return $this;
     }
 
     /**
      * Sets the receiver email (T1229).
-     *
-     * @param string $number
-     *
-     * @return $this
      */
-    public function setReceiverEmail($number)
+    public function setReceiverEmail(string $number): Request
     {
-        $this->set(Config::T1229, (string)$number);
+        $this->set(Config::T1229, $number);
 
         return $this;
     }
 
     /**
      * Sets the receiver reference (T859).
-     *
-     * @param string $reference
-     *
-     * @return $this
      */
-    public function setReceiverReference($reference)
+    public function setReceiverReference(string $reference): Request
     {
-        $this->set(Config::T859, (string)$reference);
+        $this->set(Config::T859, $reference);
 
         return $this;
     }
 
     /**
      * Sets the secondary receiver reference (T854).
-     *
-     * @param string $reference
-     *
-     * @return $this
      */
-    public function setReceiverReference2($reference)
+    public function setReceiverReference2(string $reference): Request
     {
-        $this->set(Config::T854, (string)$reference);
+        $this->set(Config::T854, $reference);
 
         return $this;
     }
 
     /**
      * Sets the tertiary receiver reference (T8908).
-     *
-     * @param string $reference
-     *
-     * @return $this
      */
-    public function setReceiverReference3($reference)
+    public function setReceiverReference3(string $reference): Request
     {
-        $this->set(Config::T8908, (string)$reference);
+        $this->set(Config::T8908, $reference);
 
         return $this;
     }
 
     /**
      * Sets the sender company (T810).
-     *
-     * @param string $name
-     *
-     * @return $this
      */
-    public function setSenderCompany($name)
+    public function setSenderCompany(string $name): Request
     {
-        $this->set(Config::T810, (string)$name);
+        $this->set(Config::T810, $name);
 
         return $this;
     }
 
     /**
      * Sets the sender street (T820).
-     *
-     * @param string $street
-     *
-     * @return $this
      */
-    public function setSenderStreet($street)
+    public function setSenderStreet(string $street): Request
     {
-        $this->set(Config::T820, (string)$street);
+        $this->set(Config::T820, $street);
 
         return $this;
     }
 
     /**
      * Sets the sender country code (T821).
-     *
-     * @param string $country
-     *
-     * @return $this
      */
-    public function setSenderCountry($country)
+    public function setSenderCountry(string $country): Request
     {
         $this->set(Config::T821, strtoupper($country));
 
@@ -387,114 +301,82 @@ class Request extends AbstractData
 
     /**
      * Sets the sender postal code (T822).
-     *
-     * @param string $postalCode
-     *
-     * @return $this
      */
-    public function setSenderPostalCode($postalCode)
+    public function setSenderPostalCode(string $postalCode): Request
     {
-        $this->set(Config::T822, (string)$postalCode);
+        $this->set(Config::T822, $postalCode);
 
         return $this;
     }
 
     /**
      * Sets the sender city (T823).
-     *
-     * @param string $city
-     *
-     * @return $this
      */
-    public function setSenderCity($city)
+    public function setSenderCity(string $city): Request
     {
-        $this->set(Config::T823, (string)$city);
+        $this->set(Config::T823, $city);
 
         return $this;
     }
 
     /**
      * Sets the GLS shipment deposit (T8700).
-     *
-     * @param string $deposit
-     *
-     * @return $this
      */
-    public function setGLSShipmentDeposit($deposit)
+    public function setGLSShipmentDeposit(string $deposit): Request
     {
-        $this->set(Config::T8700, (string)$deposit);
+        $this->set(Config::T8700, $deposit);
 
         return $this;
     }
 
     /**
      * Sets the customer code (T8915).
-     *
-     * @param string $code
-     *
-     * @return $this
      */
-    public function setCustomerCode($code)
+    public function setCustomerCode(string $code): Request
     {
-        $this->set(Config::T8915, (string)$code);
+        $this->set(Config::T8915, $code);
 
         return $this;
     }
 
     /**
      * Sets the contact id (T8914).
-     *
-     * @param string $id
-     *
-     * @return $this
      */
-    public function setContactId($id)
+    public function setContactId(string $id): Request
     {
-        $this->set(Config::T8914, (string)$id);
+        $this->set(Config::T8914, $id);
 
         return $this;
     }
 
     /**
      * Sets the parcel number (T8904 & T8973).
-     *
-     * @param string $number
-     *
-     * @return $this
      */
-    public function setParcelNumber($number)
+    public function setParcelNumber(string $number): Request
     {
-        $this->set(Config::T8904, (string)$number);
-        $this->set(Config::T8973, (string)$number);
+        $this->set(Config::T8904, $number);
+        $this->set(Config::T8973, $number);
 
         return $this;
     }
 
     /**
      * Sets the parcel count (T8905 & T8702).
-     *
-     * @param string $count
-     *
-     * @return $this
      */
-    public function setParcelCount($count)
+    public function setParcelCount(string $count): Request
     {
-        $this->set(Config::T8905, (string)$count);
-        $this->set(Config::T8702, (string)$count);
+        $this->set(Config::T8905, $count);
+        $this->set(Config::T8702, $count);
 
         return $this;
     }
 
     /**
      * Sets the origin reference (T8975).
-     *
-     * @param string $count
-     *
-     * @return $this
      */
-    public function setOriginReference($count)
+    public function setOriginReference(string $count): Request
     {
-        $this->set(Config::T8975, (string)$count);
+        $this->set(Config::T8975, $count);
 
         return $this;
     }
@@ -502,13 +384,9 @@ class Request extends AbstractData
     /**
      * Configures the request (called by the client).
      *
-     * @param array $config
-     *
-     * @return $this
-     *
      * @see Client::send()
      */
-    public function configure(array $config)
+    public function configure(array $config): Request
     {
         return $this
             ->setGLSShipmentDeposit($config[Config::T8700])

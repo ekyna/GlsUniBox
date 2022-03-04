@@ -1,4 +1,6 @@
-<?php
+<?php /** @noinspection PhpConstantNamingConventionInspection */
+
+declare(strict_types=1);
 
 namespace Ekyna\Component\GlsUniBox\Api;
 
@@ -14,40 +16,40 @@ abstract class Service
     /**
      * Business Parcel
      */
-    const BP  = 'BP';  // Business Parcel
+    public const BP = 'BP';  // Business Parcel
 
     /**
      * Euro Business Parcel
      */
-    const EBP = 'EBP';
+    public const EBP = 'EBP';
 
     /**
      * Global Business Parcel
      */
-    const GBP = 'GBP';
+    public const GBP = 'GBP';
 
     /**
      * Express Parcel Guaranteed
      */
-    const EP  = 'EP';
+    public const EP = 'EP';
 
     /**
      * Shop Delivery Service
      */
-    const SHD = 'SHD';
+    public const SHD = 'SHD';
 
     /**
      * Flex Delivery Service
      */
-    const FDF = 'FDF';
+    public const FDF = 'FDF';
 
 
     /**
      * Returns the available product codes.
      *
-     * @return array|string[]
+     * @return array<string>
      */
-    static public function getCodes()
+    public static function getCodes(): array
     {
         return [
             static::BP,
@@ -60,21 +62,21 @@ abstract class Service
     }
 
     /**
-     * Returns whether or not the given code is valid.
+     * Returns whether the given code is valid.
      *
      * @param string $code
      * @param bool   $throw
      *
      * @return bool
      */
-    static public function isValid($code, $throw = true)
+    public static function isValid(string $code, bool $throw = true): bool
     {
         if (in_array($code, static::getCodes())) {
             return true;
         }
 
         if ($throw) {
-            throw new InvalidArgumentException("Unexpected product code.");
+            throw new InvalidArgumentException('Unexpected product code.');
         }
 
         return false;
@@ -87,7 +89,7 @@ abstract class Service
      *
      * @return string
      */
-    static public function getLabel($code)
+    public static function getLabel(string $code): string
     {
         static::isValid($code);
 
@@ -111,9 +113,9 @@ abstract class Service
     /**
      * Returns the choices.
      *
-     * @return array
+     * @return array<string, string>
      */
-    static public function getChoices()
+    public static function getChoices(): array
     {
         $choices = [];
 
@@ -126,18 +128,13 @@ abstract class Service
 
     /**
      * Returns the numerical equivalent product code.
-     *
-     * @param string $code
-     *
-     * @return string
      */
-    static function getNumerical($code)
+    public static function getNumerical(string $code): string
     {
         static::isValid($code);
 
         switch ($code) {
             case static::EBP :
-                return '01';
             case static::GBP :
                 return '01';
             case static::EP :
@@ -154,12 +151,8 @@ abstract class Service
 
     /**
      * Returns the "UNI Ship" equivalent product code.
-     *
-     * @param string $code
-     *
-     * @return string
      */
-    static function getUniShip($code)
+    public static function getUniShip(string $code): ?string
     {
         static::isValid($code);
 
